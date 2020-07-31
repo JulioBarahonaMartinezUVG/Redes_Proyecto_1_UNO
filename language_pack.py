@@ -1,0 +1,26 @@
+user_messages = {
+    'Español': {
+        'title': 'Bienvenido',
+        'swap':'English',
+        'main_menu_choice':'Escoja una opcion',
+        'join_game':'Unirse a partida',
+        'create_game':'Crear partida',
+        'help':'Ayuda',
+        'quit':'Salir',
+        '':'',
+        '':'',
+        '':'',
+    },
+    'English': {
+        'title': 'Welcome',
+        'swap': 'Español',
+        'main_menu_choice':'Pick a choice',
+        'join_game':'Join game',
+        'create_game':'Create game',
+        'help':'Help',
+        'quit':'Quit',
+        '':'',
+        '':'',
+        '':'',
+    },
+}
