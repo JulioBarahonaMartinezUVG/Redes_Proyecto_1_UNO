@@ -31,6 +31,9 @@ pip install requirements.txt
 
 
 ## Uso
-
+Iniciar la terminal donde se tenga la carpeta del proyecto , una vez adentro ejecutar:
+```
+python main_GUI.py 
+```
 
 ## Licencias
