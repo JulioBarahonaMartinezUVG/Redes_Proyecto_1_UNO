@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-from easygui import *
-from language_pack import *
+from sub_gui_elements import *
 on = True
 
 #lang choice
-languague = buttonbox(choices=['Español', 'English'])
+languague = buttonbox(
+    choices=['Español', 'English']
+)
 
 #welcome message
 msgbox('"UNO" '
@@ -18,8 +19,9 @@ msgbox('"UNO" '
 while on:
     #main instrucions
     choice = buttonbox(
+        image="main_menu.png",
         msg=user_messages[languague]['main_menu_choice'],
-        title='Main menu ',
+        title='UNO',
         choices=[
             user_messages[languague]['join_game'],
             user_messages[languague]['create_game'],
@@ -31,7 +33,7 @@ while on:
 
     print(choice)
     if choice == user_messages[languague]['help']:
-        pass
+        user_help(languague)
 
     #user changes language
     if choice ==  user_messages[languague]['swap']:
