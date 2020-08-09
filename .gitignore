@@ -130,3 +130,5 @@ dmypy.json
 
 #pycharm proyect files
 .idea
+/Lab2/
+/Lab2 (copy)/
