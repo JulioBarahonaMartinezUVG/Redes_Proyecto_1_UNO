@@ -117,7 +117,7 @@ def game(conn):
             conn.send(str.encode(cmd))
             client_response = str(conn.recv(1024), "utf-8")
             print(client_response, end="")
-
+'''
 #con este podemos enviar objetos a otros clientes
 def send_obj(conn,carta):
     obj = pickle.dumps(carta)
@@ -129,12 +129,3 @@ def recv_obj(conn):
     carta = conn.recv(1024)
     carta = pickle.loads(carta)
     print(carta)
-
-#We Create the element that will make the server work
-def main():
-    create_socket()
-    bind_socket()
-    socket_accept()
-#Server is created
-main()
-'''
