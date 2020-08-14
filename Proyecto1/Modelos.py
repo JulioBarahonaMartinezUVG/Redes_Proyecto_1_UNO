@@ -6,6 +6,7 @@ class Player:
     def __init__(self, name):
         self.name = name
         self.game = ""
+        self.cards = []
 
     #when called returns the player name
     def get_name(self):
@@ -14,6 +15,9 @@ class Player:
     #sets the player to an
     def set_game(self, gameAddress):
         self.game = gameAddress
+
+    def get_cards(self):
+        return self.cards
 
 # sets card value and color
 class Card:
@@ -32,30 +36,44 @@ class Card:
 class Deck:
     def __init__(self):
         self.cards = []
+        self.populate()
+        self.shuffle_Deck()
 
+    #adds a card to the deck
     def add_card(self, Card):
         self.cards.append(Card)
 
+    def get_cards(self):
+        return self.cards
+
+    def set_cards(self, new_cards):
+        self.cards = new_cards
+
+    # creates the amounts of cards needed to play
     def populate(self):
         import random
-        # order goes
-        # (amount_of_cards, color (blue,red,yellow,green), simbol{s=skip, r = reverse, w=wild})
+        spade = "♠"
+        heart = "♥"
+        diamond = "♦"
+        club = "♣"
         cards = [
-            (1,'b','0'),(2,'b','1'),(2,'b','2'),(2,'b','3'),(2,'b','4'),(2,'b','5'),
-            (2,'b','6'),(2,'b','7'),(2,'b','8'),(2,'b','9'),(2,'b','+2'),(2,'b','s'),
-            (2,'b','r'),
+            (1, spade, '0'), (2, spade, '1'), (2, spade, '2'), (2, spade, '3'), (2, spade, '4'), (2, spade, '5'),
+            (2, spade, '6'), (2, spade, '7'), (2, spade, '8'), (2, spade, '9'), (2, spade, '+2'), (2, spade, 's'),
+            (2, spade, 'r'),
 
-            (1, 'r', '0'), (2, 'r', '1'), (2, 'r', '2'), (2, 'r', '3'), (2, 'r', '4'), (2, 'r', '5'),
-            (2, 'r', '6'), (2, 'r', '7'), (2, 'r', '8'), (2, 'r', '9'), (2, 'r', '+2'), (2, 'r', 's'),
-            (2, 'r', 'r'),
+            (1, heart, '0'), (2, heart, '1'), (2, heart, '2'), (2, heart, '3'), (2, heart, '4'), (2, heart, '5'),
+            (2, heart, '6'), (2, heart, '7'), (2, heart, '8'), (2, heart, '9'), (2, heart, '+2'), (2, heart, 's'),
+            (2, heart, 'r'),
 
-            (1, 'y', '0'), (2, 'y', '1'), (2, 'y', '2'), (2, 'y', '3'), (2, 'y', '4'), (2, 'y', '5'),
-            (2, 'y', '6'), (2, 'y', '7'), (2, 'y', '8'), (2, 'y', '9'), (2, 'y', '+2'), (2, 'y', 's'),
-            (2, 'y', 'r'),
+            (1, diamond, '0'), (2, diamond, '1'), (2, diamond, '2'), (2, diamond, '3'), (2, diamond, '4'),
+            (2, diamond, '5'),
+            (2, diamond, '6'), (2, diamond, '7'), (2, diamond, '8'), (2, diamond, '9'), (2, diamond, '+2'),
+            (2, diamond, 's'),
+            (2, diamond, 'r'),
 
-            (1, 'g', '0'), (2, 'g', '1'), (2, 'g', '2'), (2, 'g', '3'), (2, 'g', '4'), (2, 'g', '5'),
-            (2, 'g', '6'), (2, 'g', '7'), (2, 'g', '8'), (2, 'g', '9'), (2, 'g', '+2'), (2, 'g', 's'),
-            (2, 'g', 'r'),
+            (1, club, '0'), (2, club, '1'), (2, club, '2'), (2, club, '3'), (2, club, '4'), (2, club, '5'),
+            (2, club, '6'), (2, club, '7'), (2, club, '8'), (2, club, '9'), (2, club, '+2'), (2, club, 's'),
+            (2, club, 'r'),
 
             (4,'m','w'),
             (4,'m','+4'),
@@ -66,21 +84,19 @@ class Deck:
                 c = Card(card[1],card[2])
                 self.add_card(c)
 
-        s = random.sample(cards, len(cards) )
-        # print(cards)
-        # print(s)
+        s = random.sample(self.get_cards(), len(self.cards))
+        self.set_cards(s)
 
     def shuffle_Deck(self):
-        cards = self.cards
-        print(type(cards[0]))
-
-# d = Deck()
-# d.populate()
-# d.shuffle_Deck()
+        cards = self.get_cards()
+        for i in cards:
+            print(i.get_value() + " "+ i.get_color())
+        print(len(cards))
 
 #each session is defined here
 class Game:
     def __init__(self, address_input):
+        self.Deck = Deck
         self.max_players = 10
         self.players = []
         self.state = ''
