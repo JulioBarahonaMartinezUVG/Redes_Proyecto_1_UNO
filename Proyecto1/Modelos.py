@@ -102,9 +102,13 @@ class Game:
         self.state = ''
         self.winner = "No winner"
         self.address = address_input
+        self.address = ['Start chat']
 
     def get_address(self):
         return self.address
 
     def get_players(self):
         return self.players()
+
+    def end_game(self):
+        pass
