@@ -7,9 +7,9 @@ import threading
 import time
 from queue import Queue
 #numero de threads
-NUM_OF_THREADS = 3
+NUM_OF_THREADS = 2
 #la cantidad de trabajos en los threads
-JOB_NUM = [1,2,3]
+JOB_NUM = [1,2]
 #nuestro Queue de tareas
 queue = Queue()
 #la lista de jugadores conectados
@@ -18,9 +18,12 @@ all_connections = []
 all_addres = []
 #no se para que servia esta variable
 HEADERSIZE = 10
+#lista de los jugadores
+list_players = []
 turno = 0
 start = False
 Board = False
+cont = 0
 #creamos los sockets(para la conexion entre dispositivos)
 def create_socket():
     try:
@@ -50,6 +53,7 @@ def bind_socket():
 #manejando la coneccion entre distintos clientes y agregandolos a la lista
 #cerrando todas las conexiones anteriores del server.py al ser reseteado
 def accepting_connection():
+    global cont
     #en este for se encarga de cerrar todas las conexiones
     for c in all_connections:
         c.close()
@@ -70,8 +74,10 @@ def accepting_connection():
             all_addres.append(address)
             print(5)
             print("connection has been established: " + address[0])
-            print(p1)
-            send_obj(conn, p1)
+            cont += 1
+            list_players.append(Player("player " + str(cont)))
+            x = threading.Thread(target=jugador, args=(conn,cont,), daemon=True)
+            x.start()
         except:
             #print("error accepting connections")
             pass
@@ -80,29 +86,8 @@ def accepting_connection():
 # interactive promp for sending commands
 
 def Game():
-    if start == True:
-        while True:
-            #recibe una carta
-            indef = recv_obj
-            #comprueba si es una carta
-            if indef.__name__ == "card":
-                #activa variable para actualizar el board al final del turno para todos los jugadores
-                Board = True
-
-            if Board == True:
-                Board = False
-
-
-#manejando el chat
-def handle_chat():
-    if start == True:
-        while True:
-            mesage = recv_obj()
-            if mesage.__name__ == "msg":
-                for x in range(0, len(all_connections)-1):
-                    if x != mesage.numPlayer-1:
-                        send_obj(all_connections[x], mesage)
-
+    while True:
+        
 
 
 #create worket thread
@@ -123,33 +108,91 @@ def work():
         #si se envio una carta
         if x == 2:
             Game()
-        #si se envio un mensaje
-        if x == 3:
-            handle_chat()
+
 
 def create_jobs():
     for x in JOB_NUM:
         queue.put(x)
     queue.join()
 
+def jugador(coneccion, i):
+    global start, all_connections
+    orden = i
+    while True:
+        #print("player " + str(var))
+        #time.sleep(2)
+        data = recv_obj(coneccion)
+        if data.get_tipo() == 0:
+            
+        if data.get_tipo() == 1:
+            for x in range(0, len(all_connections)):
+                msg = ServerMessage(2,list_players[x].name + " : " data.content)
+                send_obj(all_connections[x])
+        if data.get_tipo() == 2:
+            carta = Deck.pop_card()
+            Player.cards.append(carta)
+            msg = ServerMessage(3,carta)
+            send_obj(coneccion, msg)
+        if data.get_tipo() == 3:
+            list_players[orden-1].game = data.get_content()
+        if data.get_tipo() == 4:
+            list_players[orden-1].name = data.get_content()
+        if data.get_tipo() == 5:
+            start = True
+
 def actualizar_Board():
     pass
 
 #con este podemos enviar objetos a otros clientes
 def send_obj(conn,o):
-    print("a")
+    #print("a")
     obj = pickle.dumps(o)
-    print("b")
+    #print("b")
     obj = bytes(f"{len(obj):<{HEADERSIZE}}", 'utf-8') + obj
-    print("c")
+    #print("c")
     conn.send(obj)
-    print("d")
+    #print("d")
 
 #con esta funcion podemos recibir objetos que nos manden
 def recv_obj(conn):
     obj = conn.recv(1024)
     obj = pickle.loads(obj[HEADERSIZE:])
     return obj
+
+class ServerMessage:
+
+    def __init__(self, tipo, content):
+        self.tipo = tipo
+        self.content = content
+
+    def get_content(self):
+        return self.content
+
+    def get_tipo(self):
+        return self.tipo
+
+
+
+
+class Player:
+    def __init__(self, name):
+        self.name = name
+        self.game = ""
+        self.cards = []
+
+    #when called returns the player name
+    def get_name(self):
+        return self.name
+
+    #sets the player to an
+    def set_game(self, gameAddress):
+        self.game = gameAddress
+
+    def set_cards(self, card):
+        self.cards.append(card)
+
+    def get_cards(self):
+        return self.cards
 
 class Deck:
     def __init__(self):
@@ -167,10 +210,16 @@ class Deck:
     def set_cards(self, new_cards):
         self.cards = new_cards
 
+    def cant_cartas(self):
+        print(len(self.cards))
+
+    def pop_card(self):
+        return self.cards.pop(0)
+
     # creates the amounts of cards needed to play
     def populate(self):
         import random
-        spade = "♠"\
+        spade = "♠"
         heart = "♥"
         diamond = "♦"
         club = "♣"
@@ -209,25 +258,6 @@ class Deck:
         cards = self.get_cards()
         for i in cards:
             print(i.get_value() + " "+ i.get_color())
-        print(len(cards))
-
-class msg:
-    def __init__(self, numPlayer, mensaje):
-        self.numPlayer = numPlayer #numero del jugador que envia el mensaje
-        self.mensaje = mensaje #mensaje a contener
-
-# sets card value and color
-class Card:
-    def __init__(self, color, value):
-        self.color = color # rojo, azul, verde, amarillo, multicolor
-        self.value = value # 0-9, skip, reverse, +2, +4, change
-
-    def get_color(self):
-        return self.color
-
-    def get_value(self):
-        return self.value
-
 
 create_workers()
 create_jobs()
