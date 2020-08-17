@@ -47,16 +47,27 @@ def change_name(name):
 def send_start():
     msg = Modelos.ClientMessage(5,null)
     send_obj(msg)
-    
+
+
+def desplegar_chat():
+    pass
+
+def actualizar_board():
+    pass
+
+
+
 
 while True:
     #data = str(s.recv(1024), "utf-8")
     #data = recv_obj()
     data = recv_obj()
     if data:
-        print(data.x)
-        k = input()
-        s.send(str.encode(k))
+        if (data.get_tipo==0):
+            pass
+        elif (data.get_tipo==1):
+            pass
+
 
 
 
