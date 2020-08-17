@@ -85,7 +85,7 @@ def Game():
             #recibe una carta
             indef = recv_obj
             #comprueba si es una carta
-            if indef.__name__ == "carta":
+            if indef.__name__ == "card":
                 #activa variable para actualizar el board al final del turno para todos los jugadores
                 Board = True
 
@@ -97,9 +97,11 @@ def Game():
 def handle_chat():
     if start == True:
         while True:
-            indef = recv_obj
-            if indef.__name__ == "msg":
-                pass
+            mesage = recv_obj()
+            if mesage.__name__ == "msg":
+                for x in range(0, len(all_connections)-1):
+                    if x != mesage.numPlayer-1:
+                        send_obj(all_connections[x], mesage)
 
 
 
@@ -130,9 +132,6 @@ def create_jobs():
         queue.put(x)
     queue.join()
 
-class cosa:
-    x = 5
-
 def actualizar_Board():
     pass
 
@@ -152,6 +151,66 @@ def recv_obj(conn):
     obj = pickle.loads(obj[HEADERSIZE:])
     return obj
 
+class Deck:
+    def __init__(self):
+        self.cards = []
+        self.populate()
+        self.shuffle_Deck()
+
+    #adds a card to the deck
+    def add_card(self, Card):
+        self.cards.append(Card)
+
+    def get_cards(self):
+        return self.cards
+
+    def set_cards(self, new_cards):
+        self.cards = new_cards
+
+    # creates the amounts of cards needed to play
+    def populate(self):
+        import random
+        spade = "♠"\
+        heart = "♥"
+        diamond = "♦"
+        club = "♣"
+        cards = [
+            (1, spade, '0'), (2, spade, '1'), (2, spade, '2'), (2, spade, '3'), (2, spade, '4'), (2, spade, '5'),
+            (2, spade, '6'), (2, spade, '7'), (2, spade, '8'), (2, spade, '9'), (2, spade, '+2'), (2, spade, 's'),
+            (2, spade, 'r'),
+
+            (1, heart, '0'), (2, heart, '1'), (2, heart, '2'), (2, heart, '3'), (2, heart, '4'), (2, heart, '5'),
+            (2, heart, '6'), (2, heart, '7'), (2, heart, '8'), (2, heart, '9'), (2, heart, '+2'), (2, heart, 's'),
+            (2, heart, 'r'),
+
+            (1, diamond, '0'), (2, diamond, '1'), (2, diamond, '2'), (2, diamond, '3'), (2, diamond, '4'),
+            (2, diamond, '5'),
+            (2, diamond, '6'), (2, diamond, '7'), (2, diamond, '8'), (2, diamond, '9'), (2, diamond, '+2'),
+            (2, diamond, 's'),
+            (2, diamond, 'r'),
+
+            (1, club, '0'), (2, club, '1'), (2, club, '2'), (2, club, '3'), (2, club, '4'), (2, club, '5'),
+            (2, club, '6'), (2, club, '7'), (2, club, '8'), (2, club, '9'), (2, club, '+2'), (2, club, 's'),
+            (2, club, 'r'),
+
+            (4,'m','w'),
+            (4,'m','+4'),
+
+        ]
+        for card in cards:
+            for amount in range(card[0]):
+                c = Card(card[1],card[2])
+                self.add_card(c)
+
+        s = random.sample(self.get_cards(), len(self.cards))
+        self.set_cards(s)
+
+    def shuffle_Deck(self):
+        cards = self.get_cards()
+        for i in cards:
+            print(i.get_value() + " "+ i.get_color())
+        print(len(cards))
+
 class msg:
     def __init__(self, numPlayer, mensaje):
         self.numPlayer = numPlayer #numero del jugador que envia el mensaje
@@ -169,7 +228,7 @@ class Card:
     def get_value(self):
         return self.value
 
-p1 = cosa()
+
 create_workers()
 create_jobs()
 '''
