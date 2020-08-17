@@ -58,7 +58,7 @@ def accepting_connection():
             #confirma la conexion
             conn, address = s.accept()
             s.setblocking(1) #prevents timeout
-
+            conn.send(str.encode("te has conectado al server"))
             all_connections.append(conn)
             all_addres.append(address)
 
@@ -71,7 +71,6 @@ def accepting_connection():
 
 def start_Game():
 
-    conn.send(str.encode("te has conectado al server"))
     while True:
         '''
         cmd = input("player mensaje: ")
