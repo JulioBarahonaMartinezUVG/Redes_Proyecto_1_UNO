@@ -127,5 +127,20 @@ class ClientMessage:
         self.tipo=tipo
         self.content=content
     
-    def get_content():
-        return content
+    def get_content(self):
+        return self.content
+
+    def get_tipo(self):
+        return self.tipo
+
+class ServerMessage:
+
+    def __init__(self, tipo, content):
+        self.tipo = tipo
+        self.content = content
+
+    def get_content(self):
+        return self.content
+
+    def get_tipo(self):
+        return self.tipo
