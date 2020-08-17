@@ -61,7 +61,7 @@ class Deck:
     # creates the amounts of cards needed to play
     def populate(self):
         import random
-        spade = "♠"\
+        spade = "♠"
         heart = "♥"
         diamond = "♦"
         club = "♣"
@@ -123,16 +123,9 @@ class Game:
         pass
 
 class ClientMessage:
-    def __init__(self, tipo, chat, card):
+    def __init__(self, tipo, content):
         self.tipo=tipo
-        self.chat=chat
-        self.card=card
+        self.content=content
     
-    def get_type():
-        return tipo
-    
-    def get_chat():
-        return chat
-        
-    def get_card():
-        return card
+    def get_content():
+        return content
