@@ -25,13 +25,9 @@ while True:
 
 #con este podemos enviar objetos a otros clientes
 def send_obj(o):
-    print("a")
     obj = pickle.dumps(o)
-    print("b")
     obj = bytes(f"{len(obj):<{HEADERSIZE}}", 'utf-8') + obj
-    print("c")
     s.send(obj)
-    print("d")
 
 #con esta funcion podemos recibir objetos que nos manden
 def recv_obj():
@@ -40,6 +36,4 @@ def recv_obj():
     return obj
 
 def wake_up_server():
-    '''
-
-
+    pass
