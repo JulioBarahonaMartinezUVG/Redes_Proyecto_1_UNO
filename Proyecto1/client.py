@@ -9,27 +9,34 @@ host ="192.168.1.17"
 port = 4000
 s.connect((host, port))
 
-while True:
-    data = str(s.recv(1024), "utf-8")
+class cosa:
+    x = 5
 
-    if len(data) > 0:
-        print(data)
+while True:
+    #data = str(s.recv(1024), "utf-8")
+    #data = recv_obj()
+    data = s.recv(1024)
+    data = pickle.loads(data[HEADER_SIZE:])
+    if data:
+        print(data.x)
         k = input()
         s.send(str.encode(k))
 
 '''
-#con este podemos enviar objetos al server
-def send_obj(carta):
-    obj = pickle.dumps(carta)
+#con este podemos enviar objetos a otros clientes
+def send_obj(conn,o):
+    obj = pickle.dumps(o)
+    #obj = bytes(f"{len(obj):<{HEADERSIZE}}", 'utf-8') + obj
     print(obj)
-    obj = bytes(f'{len(obj):<{HEADER_SIZE}}', "utf-8") + obj
-    s.send(obj)
-#con esta funcion podemos recibir objetos que nos manden del server
-def recv_obj():
-    carta = s.recv(1024)
-    carta = pickle.loads(carta)
-    print(carta)
+    conn.send(obj)
 
+#con esta funcion podemos recibir objetos que nos manden
+def recv_obj():
+    obj = s.recv(1024)
+    obj = pickle.loads(obj)
+    return obj
 
 def wake_up_server():
-'''
+    '''
+
+
