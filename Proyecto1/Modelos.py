@@ -58,12 +58,6 @@ class Deck:
     def set_cards(self, new_cards):
         self.cards = new_cards
 
-    def cant_cartas(self):
-        print(len(self.cards))
-
-    def pop_card(self):
-        return self.cards.pop(0)
-
     # creates the amounts of cards needed to play
     def populate(self):
         import random
@@ -106,6 +100,7 @@ class Deck:
         cards = self.get_cards()
         for i in cards:
             print(i.get_value() + " "+ i.get_color())
+        print(len(cards))
 
 #each session is defined here
 class Game:
@@ -126,3 +121,11 @@ class Game:
 
     def end_game(self):
         pass
+
+class ClientMessage:
+    def __init__(self, tipo, content):
+        self.tipo=tipo
+        self.content=content
+    
+    def get_content():
+        return content
