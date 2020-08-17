@@ -126,11 +126,3 @@ class Game:
 
     def end_game(self):
         pass
-
-
-d = Deck()
-d.cant_cartas()
-x = d.pop_card()
-print(x.get_color())
-print(x.get_value())
-d.cant_cartas()
