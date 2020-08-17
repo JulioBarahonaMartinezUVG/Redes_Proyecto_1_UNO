@@ -129,3 +129,23 @@ class ClientMessage:
     
     def get_content():
         return content
+
+class board:
+    def __init__(self):
+        self.list_players = []
+        self.turno = 0
+        self.center_card = []
+
+    def set_lPlayers(self, list):
+        self.list_players = list
+    def set_turno(self,turn):
+        self.turno = turn
+    def set_cenCard(self,card):
+        self.center_card = card
+
+    def get_lPlayers(self, list):
+        return self.list_players
+    def get_turno(self,turn):
+        return self.turno
+    def get_cenCard(self,card):
+        return self.center_card

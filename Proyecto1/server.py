@@ -22,7 +22,9 @@ HEADERSIZE = 10
 list_players = []
 turno = 0
 start = False
-Board = False
+Act_board = True
+Board = board()
+pila = []
 cont = 0
 #creamos los sockets(para la conexion entre dispositivos)
 def create_socket():
@@ -86,8 +88,29 @@ def accepting_connection():
 # interactive promp for sending commands
 
 def Game():
+    global start
+    global Act_board
+    global pila
+    global Board
+    global turno
+    if start == True:
+        Baraja = Deck()
+        for x in list_players:
+            for y in range (0,6):
+                x.set_cards(Baraja.pop_card())
+        Cen_Card = Baraja.pop_card()
+        pila.append(Cen_Card)
+        Act_board = False
+
     while True:
-        
+        if Act_board == False:
+            Board.set_lPlayers = list_players
+            Board.set_turno = turno
+            Board.set_cenCard = pila[-1]
+            for x in range(0, len(all_connections)):
+                msg = ServerMessage(0,Board)
+                send_obj(all_connections[x], msg)
+            Act_board = True
 
 
 #create worket thread
@@ -123,16 +146,17 @@ def jugador(coneccion, i):
         #time.sleep(2)
         data = recv_obj(coneccion)
         if data.get_tipo() == 0:
-            
+            game_logic()
         if data.get_tipo() == 1:
             for x in range(0, len(all_connections)):
-                msg = ServerMessage(2,list_players[x].name + " : " data.content)
-                send_obj(all_connections[x])
+                msg = ServerMessage(2,list_players[x].name + " : " + data.get_content)
+                send_obj(all_connections[x], msg)
         if data.get_tipo() == 2:
             carta = Deck.pop_card()
-            Player.cards.append(carta)
+            list_players[orden-1].cards.append(carta)
             msg = ServerMessage(3,carta)
             send_obj(coneccion, msg)
+            Act_board = False
         if data.get_tipo() == 3:
             list_players[orden-1].game = data.get_content()
         if data.get_tipo() == 4:
@@ -140,7 +164,7 @@ def jugador(coneccion, i):
         if data.get_tipo() == 5:
             start = True
 
-def actualizar_Board():
+def game_logic():
     pass
 
 #con este podemos enviar objetos a otros clientes
@@ -171,6 +195,25 @@ class ServerMessage:
     def get_tipo(self):
         return self.tipo
 
+class board:
+    def __init__(self):
+        self.list_players = []
+        self.turno = 0
+        self.center_card = []
+
+    def set_lPlayers(self, list):
+        self.list_players = list
+    def set_turno(self,turn):
+        self.turno = turn
+    def set_cenCard(self,card):
+        self.center_card = card
+
+    def get_lPlayers(self, list):
+        return self.list_players
+    def get_turno(self,turn):
+        return self.turno
+    def get_cenCard(self,card):
+        return self.center_card
 
 
 
