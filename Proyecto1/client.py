@@ -5,7 +5,7 @@ import pickle
 import subprocess
 HEADER_SIZE = 10
 s = socket.socket()
-host ="192.168.1.17"
+host =input("ingrese la ip del servidor: ")
 port = 4000
 s.connect((host, port))
 
