@@ -65,7 +65,7 @@ class Deck:
         self.cards = new_cards
 
     def cant_cartas(self):
-        print(len(self.cards))
+        return len(self.cards)
 
     def pop_card(self):
         return self.cards.pop(0)
@@ -129,7 +129,7 @@ class Game:
         return self.address
 
     def get_players(self):
-        return self.players()
+        return self.players
 
     def end_game(self):
         pass
@@ -138,7 +138,7 @@ class ClientMessage:
     def __init__(self, tipo, content):
         self.tipo=tipo
         self.content=content
-    
+
     def get_content(self):
         return self.content
 
