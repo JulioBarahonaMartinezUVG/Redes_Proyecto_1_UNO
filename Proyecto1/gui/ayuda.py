@@ -127,8 +127,8 @@ class Toplevel2:
         self.Button4_8.configure(activebackground="#f9f9f9")
         self.Button4_8.configure(text='''w (wild)''')
 
-if __name__ == '__main__':
-    vp_start_gui()
+
+vp_start_gui()
 
 
 
