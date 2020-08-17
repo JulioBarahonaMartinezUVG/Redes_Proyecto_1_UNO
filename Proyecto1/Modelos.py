@@ -121,3 +121,18 @@ class Game:
 
     def end_game(self):
         pass
+
+class ClientMessage:
+    def __init__(self, tipo, chat, card):
+        self.tipo=tipo
+        self.chat=chat
+        self.card=card
+    
+    def get_type():
+        return tipo
+    
+    def get_chat():
+        return chat
+        
+    def get_card():
+        return card

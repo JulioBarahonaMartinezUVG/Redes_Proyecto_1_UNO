@@ -39,4 +39,9 @@ def recv_obj():
 def wake_up_server():
     '''
 
+def send_msg(conn,obj):
+    obj = pickle.dumps(obj)
+    obj = bytes(f"{len(obj):<{HEADERSIZE}}", 'utf-8') + obj
+    print(obj)
+    conn.send(obj)
 
