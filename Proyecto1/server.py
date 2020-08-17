@@ -18,6 +18,7 @@ all_connections = []
 all_addres = []
 #no se para que servia esta variable
 HEADERSIZE = 10
+turno = 0
 start = False
 Board = False
 #creamos los sockets(para la conexion entre dispositivos)
