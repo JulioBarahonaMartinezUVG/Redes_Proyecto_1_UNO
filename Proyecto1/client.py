@@ -22,13 +22,16 @@ while True:
         k = input()
         s.send(str.encode(k))
 
-'''
+
 #con este podemos enviar objetos a otros clientes
-def send_obj(conn,o):
+def send_obj(o):
+    print("a")
     obj = pickle.dumps(o)
-    #obj = bytes(f"{len(obj):<{HEADERSIZE}}", 'utf-8') + obj
-    print(obj)
-    conn.send(obj)
+    print("b")
+    obj = bytes(f"{len(obj):<{HEADERSIZE}}", 'utf-8') + obj
+    print("c")
+    s.send(obj)
+    print("d")
 
 #con esta funcion podemos recibir objetos que nos manden
 def recv_obj():
