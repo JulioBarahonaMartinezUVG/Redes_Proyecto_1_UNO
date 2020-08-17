@@ -16,6 +16,9 @@ class Player:
     def set_game(self, gameAddress):
         self.game = gameAddress
 
+    def set_cards(self, card):
+        self.cards.append(card)
+
     def get_cards(self):
         return self.cards
 
@@ -30,6 +33,12 @@ class Card:
 
     def get_value(self):
         return self.value
+
+    def set_color(self,new_color):
+        self.color = new_color
+
+    def set_value(self, new_value):
+        self.value = new_value
 
 #When a game starts a deck is assigned
 # TODO: shuffle cards and return card
@@ -52,7 +61,7 @@ class Deck:
     # creates the amounts of cards needed to play
     def populate(self):
         import random
-        spade = "♠"
+        spade = "♠"\
         heart = "♥"
         diamond = "♦"
         club = "♣"
