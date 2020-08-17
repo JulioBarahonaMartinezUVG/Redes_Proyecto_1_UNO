@@ -16,7 +16,7 @@ queue = Queue()
 all_connections = []
 #la lista de direcciones
 all_addres = []
-
+#no se para que servia esta variable
 HEADER_SIZE = 10
 #creamos los sockets(para la conexion entre dispositivos)
 def create_socket():
@@ -52,8 +52,10 @@ def accepting_connection():
         c.close()
     del all_connections[:]
     del all_addres[:]
+    #Aqui se realizan todas conexiones de multiples servers
     while True:
         try:
+            #confirma la conexion
             conn, address = s.accept()
             s.setblocking(1) #prevents timeout
 
@@ -69,7 +71,7 @@ def accepting_connection():
 
 def start_Game():
 
-    #conn.send(str.encode("te has conectado al server"))
+    conn.send(str.encode("te has conectado al server"))
     while True:
         '''
         cmd = input("player mensaje: ")
@@ -130,7 +132,7 @@ def game(conn):
             conn.send(str.encode(cmd))
             client_response = str(conn.recv(1024), "utf-8")
             print(client_response, end="")
-'''
+
 #con este podemos enviar objetos a otros clientes
 def send_obj(conn,carta):
     obj = pickle.dumps(carta)
@@ -142,3 +144,4 @@ def recv_obj(conn):
     carta = conn.recv(1024)
     carta = pickle.loads(carta)
     print(carta)
+'''

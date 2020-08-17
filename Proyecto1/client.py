@@ -17,6 +17,7 @@ while True:
         k = input()
         s.send(str.encode(k))
 
+'''
 #con este podemos enviar objetos al server
 def send_obj(carta):
     obj = pickle.dumps(carta)
@@ -29,6 +30,6 @@ def recv_obj():
     carta = pickle.loads(carta)
     print(carta)
 
-'''
+
 def wake_up_server():
 '''
