@@ -66,18 +66,19 @@ def accepting_connection():
     while True:
         try:
             if len(all_connections) <= 4:
-                print(1)
+                #print(1)
                 #confirma la conexion
                 conn, address = s.accept()
-                print(2)
+                #print(2)
                 s.setblocking(1) #prevents timeout
                 #conn.send(str.encode("te has conectado al server"))
-                print(3)
+                #print(3)
                 all_connections.append(conn)
-                print(4)
+                #print(4)
                 all_addres.append(address)
-                print(5)
-                print("connection has been established: " + address[0])
+                #print(5)
+                print("connection has been established: " + address[cont])
+                msg = ServerMessage(3, True)
                 cont += 1
                 msg = ServerMessage(5, cont)
                 send_obj(conn, msg)
@@ -160,7 +161,7 @@ def jugador(coneccion, i):
         #time.sleep(2)
         data = recv_obj(coneccion)
         if data.get_tipo() == 0:
-            game_logic()
+            game_logic(orden, data.get_content(),coneccion)
         if data.get_tipo() == 1:
             for x in range(0, len(all_connections)):
                 msg = ServerMessage(2,list_players[x].name + " : " + data.get_content)
@@ -168,8 +169,6 @@ def jugador(coneccion, i):
         if data.get_tipo() == 2:
             carta = Baraja.pop_card()
             list_players[orden-1].cards.append(carta)
-            msg = ServerMessage(3,carta)
-            send_obj(coneccion, msg)
             Act_board = False
         if data.get_tipo() == 3:
             list_players[orden-1].game = data.get_content()
@@ -178,8 +177,77 @@ def jugador(coneccion, i):
         if data.get_tipo() == 5:
             start = True
 
-def game_logic():
-    pass
+def game_logic(turnP,cartaP, conect):
+    global turno
+    global list_players
+    global Baraja
+    global pila
+    neutro = 1
+
+    if turno == turnP:
+        if cartaP.get_color() == pila[-1].get_color() || cartaP.get_value() == pila[-1].get_value() || cartaP.get_value() == "+4" || cartaP.get_value() == "w":
+            list_players[turnP-1].remove(cartaP)
+            if cartaP.get_value() == "+4" || cartaP.get_value() == "w":
+                estado = True
+                mensaje = "escoja nombre de color para su carta(rojo,azul,amarillo,verde)"
+                msg = ServerMessage(1,mensaje)
+                send_obj(conect, msg)
+                while estado:
+                    info = recv_obj(conect)
+                    if info.get_content() == "rojo" || info.get_content() == "azul" || info.get_content() == "amarillo" || info.get_content() == "verde":
+                        cartaP.set_color(info.get_content())
+                        estado = False
+                    else:
+                        mensaje = "ingrese un color valido entre estos(rojo,azul,amarillo,verde)"
+                        msg = ServerMessage(1,mensaje)
+                        send_obj(conect, msg)
+            if cartaP.get_value() == "r":
+                neutro *= -1
+            if cartaP.get_value() == "s":
+                turno += neutro
+            if cartaP.get_value() == "+2":
+                if neutro == 1:
+                    if turnP == len(list_players):
+                        for x in range(0,1):
+                            list_players[0].cards.append(Baraja.pop_card())
+                    else:
+                        for x in range(0,1):
+                            list_players[turno].cards.append(Baraja.pop_card())
+                if neutro == -1:
+                    if turnP == 1:
+                        for x in range(0,1):
+                            list_players[len(list_players)-1].cards.append(Baraja.pop_card())
+                    else:
+                        for x in range(0,1):
+                            list_players[turno-2].cards.append(Baraja.pop_card())
+                turno += neutro
+            if cartaP.get_value() == "+4":
+                if neutro == 1:
+                    if turnP == len(list_players):
+                        for x in range(0,3):
+                            list_players[0].cards.append(Baraja.pop_card())
+                    else:
+                        for x in range(0,3):
+                            list_players[turno].cards.append(Baraja.pop_card())
+                if neutro == -1:
+                    if turnP == 1:
+                        for x in range(0,3):
+                            list_players[len(list_players)-1].cards.append(Baraja.pop_card())
+                    else:
+                        for x in range(0,3):
+                            list_players[turno-2].cards.append(Baraja.pop_card())
+            turno += neutro
+            pila.append(cartaP)
+            if turno == len(list_players)+1:
+                turno = 1
+            if turno == len(list_players)+2:
+                turno = 2
+            if turno == 0:
+                turno = len(list_players)
+            if turno == -1:
+                turno = len(list_players)-1
+            Act_board = False
+
 
 #con este podemos enviar objetos a otros clientes
 def send_obj(conn,o):
@@ -196,6 +264,17 @@ def recv_obj(conn):
     obj = conn.recv(1024)
     obj = pickle.loads(obj[HEADERSIZE:])
     return obj
+
+class ClientMessage:
+    def __init__(self, tipo, content):
+        self.tipo=tipo
+        self.content=content
+
+    def get_content(self):
+        return self.content
+
+    def get_tipo(self):
+        return self.tipo
 
 class ServerMessage:
 
