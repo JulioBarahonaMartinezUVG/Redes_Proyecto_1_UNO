@@ -312,28 +312,7 @@ class Deck:
 
 create_workers()
 create_jobs()
-'''
-#Establish connection with a client (socket must be listening)
-def socket_accept():
-    conn, address = s.accept()
-    print("connection has been established |" + "IP " + address[0] + " |PORT" + str(address[1]))
-    game(conn)
-    conn.close()
 
-#Here where the server logic should start
-def game(conn):
-    conn.send(str.encode("te has conectado al server"))
-    while True:
-        cmd = input()
-        if cmd == 'quit':
-            conn.close()
-            s.close()
-            sys.exit()
-        if len(str.encode(cmd)) > 0:
-            conn.send(str.encode(cmd))
-            client_response = str(conn.recv(1024), "utf-8")
-            print(client_response, end="")
-'''
 
 
 
