@@ -24,6 +24,7 @@ turno = 0
 start = False
 Act_board = True
 Board = board()
+Baraja = Deck()
 pila = []
 cont = 0
 #creamos los sockets(para la conexion entre dispositivos)
@@ -93,6 +94,8 @@ def Game():
     global pila
     global Board
     global turno
+    global list_players
+    global Baraja
     if start == True:
         Baraja = Deck()
         for x in list_players:
@@ -140,6 +143,11 @@ def create_jobs():
 
 def jugador(coneccion, i):
     global start, all_connections
+    global Baraja
+    global Act_board
+    global pila
+    global Board
+    global turno
     orden = i
     while True:
         #print("player " + str(var))
@@ -152,7 +160,7 @@ def jugador(coneccion, i):
                 msg = ServerMessage(2,list_players[x].name + " : " + data.get_content)
                 send_obj(all_connections[x], msg)
         if data.get_tipo() == 2:
-            carta = Deck.pop_card()
+            carta = Baraja.pop_card()
             list_players[orden-1].cards.append(carta)
             msg = ServerMessage(3,carta)
             send_obj(coneccion, msg)
