@@ -3,7 +3,7 @@ import socket
 import os
 import pickle
 import subprocess
-
+HEADER_SIZE = 10
 s = socket.socket()
 host ="192.168.1.17"
 port = 4000
