@@ -12,9 +12,15 @@ class Player:
     def get_name(self):
         return self.name
 
+    def set_name(self, nombre):
+        self.name = nombre
+
     #sets the player to an
     def set_game(self, gameAddress):
         self.game = gameAddress
+
+    def get_game(self):
+        return self.game
 
     def set_cards(self, card):
         self.cards.append(card)
@@ -57,6 +63,12 @@ class Deck:
 
     def set_cards(self, new_cards):
         self.cards = new_cards
+
+    def cant_cartas(self):
+        print(len(self.cards))
+
+    def pop_card(self):
+        return self.cards.pop(0)
 
     # creates the amounts of cards needed to play
     def populate(self):
@@ -148,7 +160,7 @@ class board:
     def __init__(self):
         self.list_players = []
         self.turno = 0
-        self.center_card = []
+        self.center_card = Card(None,None)
 
     def set_lPlayers(self, list):
         self.list_players = list

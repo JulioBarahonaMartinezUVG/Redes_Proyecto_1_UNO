@@ -23,8 +23,8 @@ list_players = []
 turno = 0
 start = False
 Act_board = True
-Board = board()
-Baraja = Deck()
+Board = None
+Baraja = None
 pila = []
 cont = 0
 #creamos los sockets(para la conexion entre dispositivos)
@@ -65,22 +65,28 @@ def accepting_connection():
     #Aqui se realizan todas conexiones de multiples servers
     while True:
         try:
-            print(1)
-            #confirma la conexion
-            conn, address = s.accept()
-            print(2)
-            s.setblocking(1) #prevents timeout
-            #conn.send(str.encode("te has conectado al server"))
-            print(3)
-            all_connections.append(conn)
-            print(4)
-            all_addres.append(address)
-            print(5)
-            print("connection has been established: " + address[0])
-            cont += 1
-            list_players.append(Player("player " + str(cont)))
-            x = threading.Thread(target=jugador, args=(conn,cont,), daemon=True)
-            x.start()
+            if len(all_connections) <= 4:
+                print(1)
+                #confirma la conexion
+                conn, address = s.accept()
+                print(2)
+                s.setblocking(1) #prevents timeout
+                #conn.send(str.encode("te has conectado al server"))
+                print(3)
+                all_connections.append(conn)
+                print(4)
+                all_addres.append(address)
+                print(5)
+                print("connection has been established: " + address[0])
+                cont += 1
+                msg = ServerMessage(5, cont)
+                send_obj(conn, msg)
+                list_players.append(Player("player " + str(cont)))
+                x = threading.Thread(target=jugador, args=(conn,cont,), daemon=True)
+                x.start()
+                msg = ServerMessage(6,list_players)
+                for x in all_connections:
+                    send_obj(x, msg)
         except:
             #print("error accepting connections")
             pass
@@ -207,7 +213,7 @@ class board:
     def __init__(self):
         self.list_players = []
         self.turno = 0
-        self.center_card = []
+        self.center_card = Card(None,None)
 
     def set_lPlayers(self, list):
         self.list_players = list
@@ -235,9 +241,15 @@ class Player:
     def get_name(self):
         return self.name
 
+    def set_name(self, nombre):
+        self.name = nombre
+
     #sets the player to an
     def set_game(self, gameAddress):
         self.game = gameAddress
+
+    def get_game(self):
+        return self.game
 
     def set_cards(self, card):
         self.cards.append(card)
@@ -309,6 +321,23 @@ class Deck:
         cards = self.get_cards()
         for i in cards:
             print(i.get_value() + " "+ i.get_color())
+
+class Card:
+    def __init__(self, color, value):
+        self.color = color # rojo, azul, verde, amarillo, multicolor
+        self.value = value # 0-9, skip, reverse, +2, +4, change
+
+    def get_color(self):
+        return self.color
+
+    def get_value(self):
+        return self.value
+
+    def set_color(self,new_color):
+        self.color = new_color
+
+    def set_value(self, new_value):
+        self.value = new_value
 
 create_workers()
 create_jobs()
