@@ -18,6 +18,7 @@ all_connections = []
 all_addres = []
 #no se para que servia esta variable
 HEADERSIZE = 10
+turno = 0
 start = False
 Board = False
 #creamos los sockets(para la conexion entre dispositivos)
@@ -41,7 +42,7 @@ def bind_socket():
 
         print("Binding the port: " + str(port))
         s.bind((host,port))
-        s.listen(10)
+        s.listen(5)
     except socket.error as msg:
         print("Socket binding error: "+ str(msg)+ "\n" + "Retrying...")
         #bind_socket()
@@ -78,7 +79,7 @@ def accepting_connection():
 #2 thread functions - 1) see all the clients 2) select a client 3) send comand to the cconnected client
 # interactive promp for sending commands
 
-def start_Game():
+def Game():
     if start == True:
         while True:
             #recibe una carta
@@ -97,7 +98,7 @@ def handle_chat():
     if start == True:
         while True:
             indef = recv_obj
-            if indef.__name__ == "mensaje":
+            if indef.__name__ == "msg":
                 pass
 
 
@@ -119,7 +120,7 @@ def work():
             accepting_connection()
         #si se envio una carta
         if x == 2:
-            start_Game()
+            Game()
         #si se envio un mensaje
         if x == 3:
             handle_chat()
@@ -151,6 +152,22 @@ def recv_obj(conn):
     obj = pickle.loads(obj[HEADERSIZE:])
     return obj
 
+class msg:
+    def __init__(self, numPlayer, mensaje):
+        self.numPlayer = numPlayer #numero del jugador que envia el mensaje
+        self.mensaje = mensaje #mensaje a contener
+
+# sets card value and color
+class Card:
+    def __init__(self, color, value):
+        self.color = color # rojo, azul, verde, amarillo, multicolor
+        self.value = value # 0-9, skip, reverse, +2, +4, change
+
+    def get_color(self):
+        return self.color
+
+    def get_value(self):
+        return self.value
 
 p1 = cosa()
 create_workers()
