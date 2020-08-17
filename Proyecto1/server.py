@@ -1,17 +1,24 @@
 #server
+# estos son los imports que necesitamos para el funcionamiento del server
 import socket
 import sys
 import pickle
 import threading
 import time
 from queue import Queue
-NUM_OF_THREADS = 2
-JOB_NUM = [1,2]
+#numero de threads
+NUM_OF_THREADS = 3
+#la cantidad de trabajos en los threads
+JOB_NUM = [1,2,3]
+#nuestro Queue de tareas
 queue = Queue()
+#la lista de jugadores conectados
 all_connections = []
+#la lista de direcciones
 all_addres = []
+
 HEADER_SIZE = 10
-#creating a socket(connect two computers)
+#creamos los sockets(para la conexion entre dispositivos)
 def create_socket():
     try:
         global host
@@ -37,9 +44,10 @@ def bind_socket():
         print("Socket binding error: "+ str(msg)+ "\n" + "Retrying...")
         #bind_socket()
 
-#handling connection from multiple clients and saving liat
-#closing precious connections when server.py files is restarted
+#manejando la coneccion entre distintos clientes y agregandolos a la lista
+#cerrando todas las conexiones anteriores del server.py al ser reseteado
 def accepting_connection():
+    #en este for se encarga de cerrar todas las conexiones
     for c in all_connections:
         c.close()
     del all_connections[:]
@@ -63,6 +71,7 @@ def start_Game():
 
     #conn.send(str.encode("te has conectado al server"))
     while True:
+        '''
         cmd = input("player mensaje: ")
         if cmd == 'quit':
             #conn.close()
@@ -72,6 +81,7 @@ def start_Game():
             #conn.send(str.encode(cmd))
             #client_response = str(conn.recv(1024), "utf-8")
             print(client_response, end="")
+            '''
 
 #create worket thread
 def create_workers():
@@ -87,8 +97,11 @@ def work():
             create_socket()
             bind_socket()
             accepting_connection()
+        #si se envio una carta
         if x == 2:
             start_Game()
+        #si se envio un mensaje
+
 def create_jobs():
     for x in JOB_NUM:
         queue.put(x)

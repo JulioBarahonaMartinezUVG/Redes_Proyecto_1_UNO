@@ -1,12 +1,12 @@
 #cliente
 import socket
 import os
-import subprocess
 import pickle
+import subprocess
+
 s = socket.socket()
 host ="192.168.1.17"
 port = 4000
-
 s.connect((host, port))
 
 while True:
@@ -28,3 +28,7 @@ def recv_obj():
     carta = s.recv(1024)
     carta = pickle.loads(carta)
     print(carta)
+
+'''
+def wake_up_server():
+'''
