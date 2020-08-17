@@ -9,6 +9,11 @@ HEADER_SIZE = 10
 s = socket.socket()
 host =input("ingrese la ip del servidor: ")
 port = 4000
+username=""
+isTurn=False
+myhand=[]
+centerCard=None
+playerCardsAmmount=[]
 s.connect((host, port))
 
 #con este podemos enviar objetos a otros clientes
@@ -41,6 +46,8 @@ def join_room(room):
     send_obj(msg)
 
 def change_name(name):
+    global username
+    username=name
     msg = Modelos.ClientMessage(4,name)
     send_obj(msg)
 
@@ -49,11 +56,22 @@ def send_start():
     send_obj(msg)
 
 
-def desplegar_chat():
-    pass
+def desplegar_chat(chat):
+    print(chat)
 
-def actualizar_board():
-    pass
+def actualizar_board(board):
+    global username
+    global isTurn
+    global centerCard
+    global myHand
+    username=name
+    lplay = board.get_lPlayers()
+    turno=lplay.index(username)+1
+    isTurn=(turno==board.get_turno)
+
+
+
+
 
 
 
@@ -63,10 +81,10 @@ while True:
     #data = recv_obj()
     data = recv_obj()
     if data:
-        if (data.get_tipo==0):
-            pass
-        elif (data.get_tipo==1):
-            pass
+        if (data.get_tipo()==0):
+            actualizar_board(data.get_content())
+        elif (data.get_tipo()==2):
+            desplegar_chat(data.get_content())
 
 
 
