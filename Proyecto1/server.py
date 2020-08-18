@@ -25,6 +25,7 @@ start = False
 Act_board = True
 Board = None
 Baraja = None
+juego = GameState()
 pila = []
 cont = 0
 #creamos los sockets(para la conexion entre dispositivos)
@@ -103,6 +104,7 @@ def Game():
     global turno
     global list_players
     global Baraja
+    global juego
     if start == True:
         Baraja = Deck()
         for x in list_players:
@@ -110,6 +112,7 @@ def Game():
                 x.set_cards(Baraja.pop_card())
         Cen_Card = Baraja.pop_card()
         pila.append(Cen_Card)
+        juego.set_state("En Proceso")
         Act_board = False
 
     while True:
@@ -117,8 +120,14 @@ def Game():
             Board.set_lPlayers = list_players
             Board.set_turno = turno
             Board.set_cenCard = pila[-1]
+            for x in list_players:
+                if len(x.cards) == 0:
+                    juego.set_state = "Terminado"
+                    juego.set_winner = x.name
             for x in range(0, len(all_connections)):
                 msg = ServerMessage(0,Board)
+                send_obj(all_connections[x], msg)
+                msg = ServerMessage(4, juego)
                 send_obj(all_connections[x], msg)
             Act_board = True
 
@@ -155,6 +164,7 @@ def jugador(coneccion, i):
     global pila
     global Board
     global turno
+
     orden = i
     while True:
         #print("player " + str(var))
@@ -185,16 +195,19 @@ def game_logic(turnP,cartaP, conect):
     neutro = 1
 
     if turno == turnP:
-        if cartaP.get_color() == pila[-1].get_color() || cartaP.get_value() == pila[-1].get_value() || cartaP.get_value() == "+4" || cartaP.get_value() == "w":
+        if ((cartaP.get_color() == pila[-1].get_color()) or
+            (cartaP.get_value() == "+4") or
+            (cartaP.get_value() == "w") or
+            (cartaP.get_value() == pila[-1].get_value())):
             list_players[turnP-1].remove(cartaP)
-            if cartaP.get_value() == "+4" || cartaP.get_value() == "w":
+            if cartaP.get_value() == "+4" or cartaP.get_value() == "w":
                 estado = True
                 mensaje = "escoja nombre de color para su carta(rojo,azul,amarillo,verde)"
                 msg = ServerMessage(1,mensaje)
                 send_obj(conect, msg)
                 while estado:
                     info = recv_obj(conect)
-                    if info.get_content() == "rojo" || info.get_content() == "azul" || info.get_content() == "amarillo" || info.get_content() == "verde":
+                    if info.get_content() == "rojo" or info.get_content() == "azul" or info.get_content() == "amarillo" or info.get_content() == "verde":
                         cartaP.set_color(info.get_content())
                         estado = False
                     else:
@@ -336,6 +349,22 @@ class Player:
     def get_cards(self):
         return self.cards
 
+class GameState:
+    def __init__(self):
+        self.state =  ""
+        self.winner = "No winner"
+
+    def get_state(self):
+        return self.state
+
+    def get_winner(self):
+        return self.winner
+
+    def set_winner(self, name):
+        self.winner
+
+    def set_state(self, estado):
+        self.state = estado
 class Deck:
     def __init__(self):
         self.cards = []

@@ -115,24 +115,22 @@ class Deck:
         print(len(cards))
 
 #each session is defined here
-class Game:
-    def __init__(self, address_input):
-        self.Deck = Deck
-        self.max_players = 10
-        self.players = []
-        self.state = ''
+class GameState:
+    def __init__(self):
+        self.state =  ""
         self.winner = "No winner"
-        self.address = address_input
-        self.address = ['Start chat']
 
-    def get_address(self):
-        return self.address
+    def get_state(self):
+        return self.state
 
-    def get_players(self):
-        return self.players
+    def get_winner(self):
+        return self.winner
 
-    def end_game(self):
-        pass
+    def set_winner(self, name):
+        self.winner
+
+    def set_state(self, estado):
+        self.state = estado
 
 class ClientMessage:
     def __init__(self, tipo, content):
