@@ -6,6 +6,7 @@ import pickle
 import threading
 import time
 from queue import Queue
+from Modelos import GameState
 #numero de threads
 NUM_OF_THREADS = 2
 #la cantidad de trabajos en los threads
@@ -349,22 +350,7 @@ class Player:
     def get_cards(self):
         return self.cards
 
-class GameState:
-    def __init__(self):
-        self.state =  ""
-        self.winner = "No winner"
 
-    def get_state(self):
-        return self.state
-
-    def get_winner(self):
-        return self.winner
-
-    def set_winner(self, name):
-        self.winner
-
-    def set_state(self, estado):
-        self.state = estado
 class Deck:
     def __init__(self):
         self.cards = []
