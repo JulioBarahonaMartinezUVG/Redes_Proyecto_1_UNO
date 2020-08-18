@@ -21,7 +21,7 @@ except ImportError:
 
 import colorChange_support
 
-def vp_start_gui():
+def colorChange_start_gui():
     '''Starting point when module is the main routine.'''
     global val, w, root
     root = tk.Tk()
@@ -60,7 +60,7 @@ class Toplevel1:
         top.minsize(1, 1)
         top.maxsize(3825, 1050)
         top.resizable(1, 1)
-        top.title("Inicio")
+        top.title("Seleccion de color")
         top.configure(background="#556B2F")
         top.configure(highlightcolor="black")
 
@@ -93,9 +93,6 @@ class Toplevel1:
         self.Label1.place(relx=0.4, rely=0.08, height=21, width=126)
         self.Label1.configure(background="#556B2F")
         self.Label1.configure(text='''Escoja un color''')
-
-if __name__ == '__main__':
-    vp_start_gui()
 
 
 
