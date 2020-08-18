@@ -6,6 +6,7 @@
 #    Aug 16, 2020 08:31:36 PM CST  platform: Linux
 from Jugadores import *
 from newName import *
+from ayuda import *
 import sys
 
 try:
@@ -65,21 +66,14 @@ class Toplevel1:
         top.title("Inicio")
         top.configure(background="#556B2F")
 
-        self.Button1_1 = tk.Button(top)
+        self.Button1_1 = tk.Button(top,command=jugadores_start_gui)
         self.Button1_1.place(relx=0.54, rely=0.182, height=81, width=191)
         self.Button1_1.configure(activebackground="#f8e5b7")
         self.Button1_1.configure(background="#f8e5b7")
         self.Button1_1.configure(cursor="fleur")
         self.Button1_1.configure(text='''Unirse a partida''')
 
-        self.Button1_2 = tk.Button(top,command=jugadores_start_gui)
-        self.Button1_2.place(relx=0.08, rely=0.182, height=81, width=191)
-        self.Button1_2.configure(activebackground="#89cff0")
-        self.Button1_2.configure(background="#89cff0")
-        self.Button1_2.configure(cursor="fleur")
-        self.Button1_2.configure(text='''Crear partida''')
-
-        self.Button1_3 = tk.Button(top)
+        self.Button1_3 = tk.Button(top, command=ayuda_start_gui)
         self.Button1_3.place(relx=0.08, rely=0.47, height=81, width=191)
         self.Button1_3.configure(activebackground="#d9f4ed")
         self.Button1_3.configure(background="#d9f4ed")

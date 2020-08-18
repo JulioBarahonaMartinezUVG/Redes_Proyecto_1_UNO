@@ -21,7 +21,7 @@ except ImportError:
 
 import board_support
 
-def vp_start_gui():
+def board_start_gui():
     '''Starting point when module is the main routine.'''
     global val, w, root
     root = tk.Tk()
@@ -183,8 +183,7 @@ class Toplevel1:
         self.Button4.place(relx=0.701, rely=0.905, height=31, width=58)
         self.Button4.configure(text='''UNO''')
 
-if __name__ == '__main__':
-    vp_start_gui()
+
 
 
 

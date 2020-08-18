@@ -64,11 +64,6 @@ class Toplevel1:
         top.configure(background="#556B2F")
         top.configure(highlightcolor="black")
 
-        self.Button1 = tk.Button(top)
-        self.Button1.place(relx=0.42, rely=0.62, height=31, width=80)
-        self.Button1.configure(activebackground="#f9f9f9")
-        self.Button1.configure(text='''Guardar''')
-
         self.Label1 = tk.Label(top)
         self.Label1.place(relx=0.34, rely=0.14, height=21, width=171)
         self.Label1.configure(activebackground="#f9f9f9")
@@ -87,8 +82,14 @@ class Toplevel1:
         self.Text1.configure(selectforeground="white")
         self.Text1.configure(wrap="word")
 
+        def get_new_text():
+            input = self.Text1.get("1.0", "end")
+            print('new name set')
+            print(input)
+            global newName
+            newName = input
 
-
-
-
-
+        self.Button1 = tk.Button(top, command=get_new_text)
+        self.Button1.place(relx=0.42, rely=0.62, height=31, width=80)
+        self.Button1.configure(activebackground="#f9f9f9")
+        self.Button1.configure(text='''Guardar''')
