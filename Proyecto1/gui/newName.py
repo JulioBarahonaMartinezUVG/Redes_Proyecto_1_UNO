@@ -21,7 +21,7 @@ except ImportError:
 
 import newName_support
 
-def vp_start_gui():
+def newName_start_gui():
     '''Starting point when module is the main routine.'''
     global val, w, root
     root = tk.Tk()
@@ -60,7 +60,7 @@ class Toplevel1:
         top.minsize(1, 1)
         top.maxsize(3825, 1050)
         top.resizable(1, 1)
-        top.title("Seleccion de salas")
+        top.title("Modificar nombre")
         top.configure(background="#556B2F")
         top.configure(highlightcolor="black")
 
@@ -87,8 +87,6 @@ class Toplevel1:
         self.Text1.configure(selectforeground="white")
         self.Text1.configure(wrap="word")
 
-if __name__ == '__main__':
-    vp_start_gui()
 
 
 

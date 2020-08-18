@@ -21,7 +21,7 @@ except ImportError:
 
 import ayuda_support
 
-def vp_start_gui():
+def ayuda_start_gui():
     '''Starting point when module is the main routine.'''
     global val, w, root
     root = tk.Tk()
@@ -126,10 +126,6 @@ class Toplevel2:
         self.Button4_8.place(relx=0.1, rely=0.533, height=31, width=98)
         self.Button4_8.configure(activebackground="#f9f9f9")
         self.Button4_8.configure(text='''w (wild)''')
-
-
-vp_start_gui()
-
 
 
 

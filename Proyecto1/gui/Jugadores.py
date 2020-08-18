@@ -21,13 +21,12 @@ except ImportError:
 
 import Jugadores_support
 
-def vp_start_gui():
+def jugadores_start_gui():
     '''Starting point when module is the main routine.'''
     global val, w, root
     root = tk.Tk()
     top = waitingroom (root)
     Jugadores_support.init(root, top)
-    root.mainloop()
 
 w = None
 def create_waitingroom(rt, *args, **kwargs):
@@ -133,8 +132,6 @@ class waitingroom:
         self.Label2_17.configure(activebackground="#f9f9f9")
         self.Label2_17.configure(text='''Disponible''')
 
-if __name__ == '__main__':
-    vp_start_gui()
 
 
 

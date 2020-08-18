@@ -21,7 +21,7 @@ except ImportError:
 
 import rooms_support
 
-def vp_start_gui():
+def rooms_start_gui():
     '''Starting point when module is the main routine.'''
     global val, w, root
     root = tk.Tk()
@@ -98,9 +98,6 @@ class Toplevel1:
         self.Button1 = tk.Button(top)
         self.Button1.place(relx=0.38, rely=0.74, height=31, width=124)
         self.Button1.configure(text='''Menu principal''')
-
-if __name__ == '__main__':
-    vp_start_gui()
 
 
 
