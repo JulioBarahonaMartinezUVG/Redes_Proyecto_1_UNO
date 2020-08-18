@@ -114,6 +114,9 @@ def unido_al_room(booleano):
     if (booleano):
         print("Se Conecto al room")
 
+def ganador_partida(nombre):
+    print(nombre, "ganó la partida")
+
 while True:
     #data = str(s.recv(1024), "utf-8")
     #data = recv_obj()
@@ -127,6 +130,8 @@ while True:
             desplegar_chat(data.get_content())
         elif (data.get_tipo()==3):
             unido_al_room(data.get_content())
+        elif (data.get_tipo()==4):
+            ganador_partida(data.get_content())
         elif (data.get_tipo()==5):
             definir_turno(data.get_content())
         elif (data.get-tipo()==6):
