@@ -131,7 +131,6 @@ class GameState:
 
     def set_state(self, estado):
         self.state = estado
-
 class ClientMessage:
     def __init__(self, tipo, content):
         self.tipo=tipo
